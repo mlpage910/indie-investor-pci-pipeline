@@ -126,3 +126,19 @@ The pipeline prints a stage-by-stage reconciliation table on every run and saves
     <strong>Why the funnel narrows where it does.</strong> The Portfolio Concentration Index (HHI-style on owners share) splits each cohort into diversified / moderate / concentrated / one-hit. Cohort 2 is genuinely more diversified than Cohort 1, and the moderate+concentrated zone is the investable PCI region. See <a href="{{ '/findings/' | relative_url }}">Findings</a> for the full reasoning.
   </figcaption>
 </figure>
+
+## The funnel in use — a second worked example
+
+The same 11-stage pipeline can be re-pointed at a different starting population. The clearest worked example is the **Cohort 2 diversified research pool**, formalized by [Finding VV]({{ '/full-findings/#finding-vv--cohort-2-diversified--clear-is-a-separately-tracked-research-category' | relative_url }}) and detailed in [Methodology §2.11]({{ '/methodology/#211-cohort-2-diversified--clear--a-separately-tracked-research-pool' | relative_url }}).
+
+The main 146-roster build excludes diversified PCI studios at Stage 7 by design: in Cohort 1 they are mostly zero-bucket-floor artifacts. In Cohort 2 they are not — they are AA+ studios whose owners are spread across a multi-IP catalog (4A Games, Tango Gameworks, SUPERHOT Team, Wolfire, Spiderweb Software, etc.). Re-running Stages 8–11 on the 108-dev C2-diversified pool with the same `investor_pipeline.py` code surfaces a **9-developer over-qualified subset**:
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/research_pool_funnel.png' | relative_url }}" alt="Research-pool sub-funnel — 108 to 83 to 9">
+  <figcaption>
+    <span class="chart-title">Research-pool sub-funnel — 108 → 83 → 9 [Finding VV]</span>
+    <strong>The funnel applied to a different population.</strong> 108 C2-diversified studios → 83 CLEAR on the suspect battery → 9 RISING + CLEAR under the Stage 11 gate. The 89% cut at the last stage is <em>not</em> a real momentum signal: the Stage 9 trajectory layer is anchor-based and structurally biased against diversified portfolios (zero `ANCHOR_*` labels is a math identity because the label requires ≥70% anchor share). The 9 candidates are therefore an <em>over-qualified subset</em>, not a final roster — the right starting point for diligence on the most clearly accelerating multi-IP studios in the pool, but the underlying 83-dev CLEAR pool is the better universe for catalog roll-up sourcing.
+  </figcaption>
+</figure>
+
+**Why this example matters.** It demonstrates two properties of the pipeline at once. First, the same code can be repointed at a different starting population without modification — the funnel is a *construction*, not a single hard-coded result. Second, every stage has visible blind spots: re-running Stages 9–11 on a diversified pool reveals that the anchor-based momentum math doesn't generalize, which is precisely the kind of failure mode the methodology pages are designed to surface. The 9-candidate list is real and usable; the methodological caveat is also real and equally important.
