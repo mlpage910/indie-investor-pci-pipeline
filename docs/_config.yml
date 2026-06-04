@@ -1,0 +1,15 @@
+title: indie-investor-pci-pipeline
+description: From 140,082 Steam titles by 53,876 developers to 457 titles by 146 developers — a reproducible 11-stage filter pipeline for indie-studio investment screening.
+theme: jekyll-theme-cayman
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+plugins:
+  - jekyll-relative-links
+  - jekyll-seo-tag
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - README.md
