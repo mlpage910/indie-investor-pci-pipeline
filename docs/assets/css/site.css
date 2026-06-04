@@ -351,6 +351,57 @@ blockquote {
 .site-footer a { color: var(--ink-soft); }
 .site-footer a:hover { color: var(--accent-2); }
 
+/* ---------- Figures (charts) ---------- */
+figure.chart {
+  margin: 2rem 0 2.4rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+figure.chart img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 0.9rem;
+  border-radius: 2px;
+}
+figure.chart figcaption {
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule);
+  padding-top: 0.7rem;
+}
+figure.chart figcaption strong {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+figure.chart figcaption .chart-title {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 0.95rem;
+  margin-bottom: 0.35rem;
+}
+.chart-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.2rem;
+  margin: 1.6rem 0 2.2rem;
+}
+.chart-gallery figure.chart { margin: 0; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 640px) {
   html { font-size: 16px; }

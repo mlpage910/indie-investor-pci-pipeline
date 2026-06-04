@@ -5,7 +5,15 @@ permalink: /findings/
 
 # Findings — Highlights
 
-<p class="lead">The pipeline rests on 47+ individually validated findings (A–UU). The most surprising or actionable ones are organized here by theme. Every entry links into the <a href="full-findings.html">full findings reference</a>.</p>
+<p class="lead">The pipeline rests on 47+ individually validated findings (A–UU). The most surprising or actionable ones are organized here by theme, each grounded in a chart. Every entry links into the <a href="{{ '/full-findings/' | relative_url }}">full findings reference</a>.</p>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/investor_candidates_map.png' | relative_url }}" alt="Map of 146 final investor candidates by inferred country">
+  <figcaption>
+    <span class="chart-title">Final 146 investor candidates, by inferred jurisdiction</span>
+    <strong>Headline</strong> 53,876 developers shipping on Steam → 146 candidates after the full 11-stage funnel. Country tags are a diligence-sequencing aid (regulatory, IP, tax, banking) — not a selection filter. ~78% land in "Unknown" by design.
+  </figcaption>
+</figure>
 
 ## Distribution & population structure
 
@@ -23,6 +31,22 @@ permalink: /findings/
   <span class="finding-key">[R]</span>
   Per-title owners distributions are <strong>left-skewed in every Cohort 2 band</strong>. At AA+ scale, the top of the catalog stops being the long tail.
 </div>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_5k_bands_overview.png' | relative_url }}" alt="Cohort 1 5K-band overview showing bimodal distribution">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — 5K-band carve [Finding E, J]</span>
+    <strong>Bimodality is visible at the band level.</strong> Catalogs cluster near the zero-bucket floor and around the niche-with-fans top — not as a smooth power law. The "moderate indie" interior is genuinely thin, which justifies treating C1 as two populations.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_10k_bands_shape.png' | relative_url }}" alt="Cohort 2 distribution shape per band">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — distribution shape across 10K bands [Finding R]</span>
+    <strong>Left-skew in every band.</strong> At AA+ scale, a studio's top title is no longer the long tail — it sits at or above the band's median. This inverts the indie-tier intuition and is what makes Cohort 2 candidates structurally different from Cohort 1 candidates.
+  </figcaption>
+</figure>
 
 ## Tag signals that actually predict scale
 
@@ -46,6 +70,22 @@ permalink: /findings/
   Niche-with-fans clusters (specific sims, narrative subsets) cluster at the <em>top</em> of Cohort 1, not the bottom.
 </div>
 
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_tag_x_band_heatmap.png' | relative_url }}" alt="Cohort 1 tag-by-band lift heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — tag × band lift heatmap [Findings M–P]</span>
+    <strong>Where each tag concentrates.</strong> Great Soundtrack lifts strongly at the top bands; Visual Novel pins to the bottom; Turn-Based lifts across multiple bands — the rare cross-tier signal. Reading this heatmap is how the pipeline decides which tags warrant separate cohort treatment.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/visual_novel_cohorts.png' | relative_url }}" alt="Visual novels behave differently in both cohorts">
+  <figcaption>
+    <span class="chart-title">Visual Novel zero-wall [Finding P]</span>
+    <strong>Most extreme zero-bucket tag in C1.</strong> VN titles concentrate at the floor and show near-zero promotion into higher bands. This is what motivates VN-aware port-shop detection (HH–JJ) and the moderate-indie tag trend work (MM).
+  </figcaption>
+</figure>
+
 ## Band-specific genre fingerprints (Cohort 2)
 
 | Cluster | Band it owns | Finding |
@@ -57,6 +97,50 @@ permalink: /findings/
 | Rogue-family / Shoot-'em-up | 125K–150K | [AA] |
 | Strategy / Base-building / Crafting | 150K–175K | [BB] |
 | Open World + Co-op | 500K+ | [CC] |
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_genre_x_band_heatmap.png' | relative_url }}" alt="Cohort 2 genre by band lift heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — genre × band lift heatmap [Findings W–CC]</span>
+    <strong>Each band has a different genre signature.</strong> Action and Massively Multiplayer dominate the 1M+ tier; builder/educational anchors mid-bands; strategy/crafting anchors the 150K–175K interior. This is the structure the moderate+concentrated filter exploits when sequencing diligence by band.
+  </figcaption>
+</figure>
+
+## Moderate-indie investigation (Cohort 1 5K band)
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_pool_size.png' | relative_url }}" alt="Moderate indie pool size after EA/F2P fix">
+  <figcaption>
+    <span class="chart-title">Moderate-indie pool size after the EA/F2P trap fix [Finding LL]</span>
+    <strong>The dual-location trap shrinks the pool ~17%.</strong> A single-location EA/F2P filter silently keeps Early Access and Free-to-Play titles in. Applying the structural filter through the same path the app uses removes them and shifts every downstream count — this is the trap that took us to 1,331 devs, not 1,610.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_tag_trends.png' | relative_url }}" alt="Tag trend lines across moderate-indie bands">
+  <figcaption>
+    <span class="chart-title">Per-tag trend across moderate-indie bands [Finding MM]</span>
+    <strong>Each tag has a directional shape.</strong> Some tags rise monotonically with band (real scale signal); others plateau or invert (saturated or zero-wall). Reading the slope, not the point estimate, is how moderate-indie tag signals get separated from noise.
+  </figcaption>
+</figure>
+
+## Portfolio Concentration Index (PCI)
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_distribution_both_cohorts.png' | relative_url }}" alt="PCI distributions for both cohorts">
+  <figcaption>
+    <span class="chart-title">PCI distribution — both cohorts [Findings NN, OO]</span>
+    <strong>Cohort 2 is genuinely more diversified than Cohort 1.</strong> The HHI-style concentration index falls right-shifted (concentrated) in C1 and left-shifted (diversified) in C2 — and the gap survives the catalog-size correction (QQ), making it a real cohort-level difference, not a measurement artifact.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_category_mix.png' | relative_url }}" alt="PCI category mix">
+  <figcaption>
+    <span class="chart-title">PCI category mix — diversified / moderate / concentrated / one-hit [Finding RR]</span>
+    <strong>Moderate + concentrated is the investable zone.</strong> Diversified studios behave like portfolios (no signal to act on); one-hit studios are unrepeatable; the middle two categories are where a coherent studio thesis can exist. Filtering to these two is what turns 1,612 PCI-resolvable devs into 1,210.
+  </figcaption>
+</figure>
 
 ## Methodological traps caught by the audit
 
@@ -108,6 +192,14 @@ permalink: /findings/
   Suspect battery and country inference operate as <em>triage layers</em>, not exclusions — annotation, not selection.
 </div>
 
+<figure class="chart">
+  <img src="{{ '/assets/charts/trajectory_distribution.png' | relative_url }}" alt="Trajectory label distribution">
+  <figcaption>
+    <span class="chart-title">Trajectory labels — RISING and ANCHOR_RECENT carry the 146 [Finding TT]</span>
+    <strong>The final gate is momentum.</strong> Of the 1,210 moderate+concentrated devs that pass the suspect battery, only those tagged RISING (82) or ANCHOR_RECENT (64) are kept — 146 in total. Falling, steady, mature, and aging studios are out of scope for active investment, by design.
+  </figcaption>
+</figure>
+
 ---
 
-[→ Full findings reference (A–UU)](full-findings.html)
+[→ Full findings reference (A–UU)]({{ '/full-findings/' | relative_url }})

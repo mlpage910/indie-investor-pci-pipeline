@@ -21,6 +21,14 @@ title: "Funnel & Methodology"
   <strong>Data is October 2024 vintage.</strong> The candidate roster is a point-in-time snapshot and is kept in a private companion repo. A new scrape with <a href="https://github.com/NewbieIndieGameDev/steam-insights">steam-insights</a> is needed to refresh.
 </div>
 
+<figure class="chart">
+  <img src="{{ '/assets/charts/investor_candidates_map.png' | relative_url }}" alt="Final 146 investor candidates by inferred country">
+  <figcaption>
+    <span class="chart-title">The pipeline output — 146 candidates, by inferred jurisdiction</span>
+    <strong>What the funnel produces.</strong> 146 developers across 457 titles. Country tags are a diligence-sequencing aid (regulatory, IP, tax, banking), not a selection filter. About 78% land in an Unknown bucket by design.
+  </figcaption>
+</figure>
+
 ## Stage-by-stage funnel
 
 | Stage | Titles | Developers |
@@ -107,4 +115,12 @@ python pipeline/investor_pipeline.py \
 cat pipeline_run/pipeline_summary.csv
 ```
 
-The pipeline prints a stage-by-stage reconciliation table on every run and saves four CSVs: the final candidates, the full mod+conc scored set, the cohort table, and the PCI-resolvable set. See [Reproducibility](reproducibility.html) for the locked-roster comparison.
+The pipeline prints a stage-by-stage reconciliation table on every run and saves four CSVs: the final candidates, the full mod+conc scored set, the cohort table, and the PCI-resolvable set. See [Reproducibility]({{ '/reproducibility/' | relative_url }}) for the locked-roster comparison.
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_distribution_both_cohorts.png' | relative_url }}" alt="PCI distribution for both cohorts">
+  <figcaption>
+    <span class="chart-title">PCI is the core mechanism — both cohorts shown</span>
+    <strong>Why the funnel narrows where it does.</strong> The Portfolio Concentration Index (HHI-style on owners share) splits each cohort into diversified / moderate / concentrated / one-hit. Cohort 2 is genuinely more diversified than Cohort 1, and the moderate+concentrated zone is the investable PCI region. See <a href="{{ '/findings/' | relative_url }}">Findings</a> for the full reasoning.
+  </figcaption>
+</figure>

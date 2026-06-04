@@ -508,3 +508,463 @@ c2_mask = agg['aa_plus'] & ~agg['broad_aaa']   # AA+ excluding broad-AAA
 **PCI restricted to cohort devs.** Stage 4 only computes PCI for the ~6,835 cohorted devs (not all 60K+ devs in the structural pool). This is a correctness fix, not just an optimization — including non-cohort devs in the PCI population would dilute the categorical mix.
 
 **Plain-language takeaway.** The pipeline is now a single runnable module that any new Steam dataset can flow through and reach the same canonical roster. The audit findings A–TT calibrate every threshold and exclusion list it uses; the reconciliation table above is the proof that the code faithfully implements them. The 146-candidate output is no longer a one-off artifact of a notebook session — it is the deterministic output of a documented filter chain.
+
+---
+
+# Chart appendix
+
+Every chart referenced by the findings above, grouped by the section it belongs to. Each figure carries the finding key(s) it visualizes and a plain-language summary of what to read in it. All charts are produced by the same code that produces the pipeline; nothing is hand-drawn.
+
+## Game-level findings (A–D) — owners thresholds & screening
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/owners_compare.png' | relative_url }}" alt="Owners distribution comparison">
+  <figcaption>
+    <span class="chart-title">Owners-band distribution comparison [A]</span>
+    <strong>The Steam catalog is owners-banded, not continuous.</strong> Every owners metric in the pipeline uses the band's lower bound — the conservative reading. Charts like this anchor why the threshold work begins at the band level rather than the title level.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/owners_compare_ladder.png' | relative_url }}" alt="Owners ladder comparison">
+  <figcaption>
+    <span class="chart-title">Owners ladder — where the population breaks [A–C]</span>
+    <strong>Real population breaks vs. the AA+ line.</strong> The conventional AA+ threshold of 50K cuts above the natural break in the data, which begins near 15K (E). The ladder visualizes both.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/owners_ge_reviews.png' | relative_url }}" alt="Owners greater-than-or-equal reviews rule">
+  <figcaption>
+    <span class="chart-title">Owners ≥ reviews rule [B]</span>
+    <strong>Sanity check.</strong> Reviews can never exceed owners. Titles that violate this rule are scraping artifacts and are excluded from threshold calibration.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/joint_filter.png' | relative_url }}" alt="Joint filter on owners">
+  <figcaption>
+    <span class="chart-title">Joint structural + activity filter [C]</span>
+    <strong>The double filter.</strong> Structural (paid + English + no EA/demo/F2P) intersected with activity (latest release &lt; 5y) leaves the working population. The shape of the surviving distribution determines the cohort thresholds.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/zero_rev_some_own.png' | relative_url }}" alt="Zero reviews but some owners">
+  <figcaption>
+    <span class="chart-title">Zero reviews, some owners [D]</span>
+    <strong>The 0-review/some-owners bucket is real and large.</strong> This is why the pipeline's PCI-resolvable stage requires ≥2 measurable-owners titles — otherwise the whole bottom of the catalog reads as "concentrated" by default.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/genre_analysis.png' | relative_url }}" alt="Genre analysis at game level">
+  <figcaption>
+    <span class="chart-title">Genre analysis (game level)</span>
+    <strong>Genre share at the title level.</strong> Used to validate that no single genre is producing the threshold effects — the population breaks are genre-mixed, which makes the cohort definition genre-agnostic.
+  </figcaption>
+</figure>
+
+## Developer-level findings — tier profile, activity, dev-weighted
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/aaa_tiers.png' | relative_url }}" alt="AAA tier distributions">
+  <figcaption>
+    <span class="chart-title">AAA-tier distributions</span>
+    <strong>Why broad-AAA and strict-AAA are excluded.</strong> AAA-tier studios are demonstrably out-of-scope for an investment thesis aimed at indie + AA+ acquirers/funders. The shape of the distribution at the top is qualitatively different from the cohort the pipeline targets.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/tier_profile.png' | relative_url }}" alt="Tier age and price profile">
+  <figcaption>
+    <span class="chart-title">Tier age × price profile</span>
+    <strong>Tier mix isn't just owners.</strong> Age, price, and tier interact — visible in this profile, which is what ultimately justifies treating C1 and C2 separately rather than as one indie-superset.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/aa_plus_active.png' | relative_url }}" alt="AA+ activity segmentation">
+  <figcaption>
+    <span class="chart-title">AA+ activity segmentation</span>
+    <strong>How active a dev is, broken down within AA+.</strong> This is the population that becomes Cohort 2. Dormancy is measured on the looser activity cohort (EA + demos kept in) to avoid penalizing devs who still ship Early Access content.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/non_aaa_active.png' | relative_url }}" alt="Non-AAA activity segmentation">
+  <figcaption>
+    <span class="chart-title">Non-AAA activity segmentation</span>
+    <strong>The Cohort 1 universe.</strong> Multi-title devs below AA+, segmented by activity. This is where most of the "moderate indie" investigation runs.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/dev_weighted.png' | relative_url }}" alt="Dev-weighted averages">
+  <figcaption>
+    <span class="chart-title">Dev-weighted averages</span>
+    <strong>Per-dev metric weighting matters.</strong> A dev with a 1M-owners hit and four 0-bucket titles is not the same investment target as a dev with five 50K titles. Dev-weighted averages surface this; the suspect battery formalizes it.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/floor_candidates.png' | relative_url }}" alt="Floor candidates">
+  <figcaption>
+    <span class="chart-title">Floor-band candidates</span>
+    <strong>Who shows up at the floor band.</strong> Used during threshold calibration to make sure the floor is not over-populated by port-shops or shovelware — which is the work that ultimately produces Stage 6 exclusions.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/no_ea_recheck.png' | relative_url }}" alt="No Early Access recheck">
+  <figcaption>
+    <span class="chart-title">No-EA recheck [precursor to LL]</span>
+    <strong>First pass at the EA filter.</strong> This chart was rebuilt after the dual-location EA/F2P trap (LL) was discovered — the corrected version is what feeds the moderate-indie pool size below.
+  </figcaption>
+</figure>
+
+## Phase-transition findings (Cohort 1 5K-band carve) — E–P
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_5k_bands_overview.png' | relative_url }}" alt="Cohort 1 5K-band overview">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — 5K-band overview [E, J]</span>
+    <strong>Bimodality.</strong> The 5K-band carve makes the zero-bucket floor and the niche-with-fans top both visible. The moderate-indie interior is genuinely thin — that is the structural fact the rest of the pipeline rests on.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_5k_bands_shape.png' | relative_url }}" alt="Cohort 1 5K-band shape">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — band shape [F–H]</span>
+    <strong>Shape inside each band.</strong> Distributions within bands are not uniform — they have their own internal tilt, which is what makes the moderate-indie investigation worthwhile rather than redundant with the band-level finding.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_5k_bands_ecdf.png' | relative_url }}" alt="Cohort 1 5K-band ECDF">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — 5K-band ECDF [I]</span>
+    <strong>Empirical cumulative distribution.</strong> The ECDF reveals where the band breaks happen as kinks in the curve — confirming the 15K start point for the AA+ approach (E) at a different angle.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_subbands.png' | relative_url }}" alt="Cohort 1 subbands">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — subband refinement [K, L]</span>
+    <strong>Finer cuts on the floor and top.</strong> Subbanding the bottom and top of Cohort 1 separates "true zero" from "low-but-present" and "niche top" from "near-AA+" — both of which feed downstream classifications.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_subbands_ecdf.png' | relative_url }}" alt="Cohort 1 subbands ECDF">
+  <figcaption>
+    <span class="chart-title">Cohort 1 subbands — ECDF view [L]</span>
+    <strong>ECDF confirms the subband cuts.</strong> The cuts chosen on the histogram are visible as inflection points here, which makes them defensible rather than arbitrary.
+  </figcaption>
+</figure>
+
+## Genre & tag shifts within Cohort 1 — K–P
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_genre_x_band_heatmap.png' | relative_url }}" alt="Cohort 1 genre by band heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — genre × band heatmap [K, M]</span>
+    <strong>Genre signatures shift across C1 bands.</strong> Some genres lift toward the top of C1, some pin the floor. This grounds the "niche-with-fans clusters at the top" finding (M) and is the C1 counterpart to the W–CC band fingerprints in Cohort 2.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_tag_x_band_heatmap.png' | relative_url }}" alt="Cohort 1 tag by band heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — tag × band heatmap [N, O, P]</span>
+    <strong>Tag lift by band.</strong> Great Soundtrack (N) lifts toward the top; Turn-Based (O) lifts across multiple bands; Visual Novel (P) pins to the floor with near-zero promotion upward. The shape of each row is the finding.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_genre_sales_curves.png' | relative_url }}" alt="Cohort 1 genre sales curves">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — genre sales curves</span>
+    <strong>Owners curves by genre.</strong> Genre-by-genre owners shape inside C1 — used to validate the genre-band heatmap at the title level rather than just the dev level.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort1_genre_sales_overlay.png' | relative_url }}" alt="Cohort 1 genre sales overlay">
+  <figcaption>
+    <span class="chart-title">Cohort 1 — genre sales overlay</span>
+    <strong>Genres overlaid on one axis.</strong> Makes the cross-genre comparison direct — which curves separate, which collapse together.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/visual_novel_cohorts.png' | relative_url }}" alt="Visual novel zero-wall cohorts">
+  <figcaption>
+    <span class="chart-title">Visual Novel zero-wall [P]</span>
+    <strong>Most extreme zero-bucket tag.</strong> VN titles cluster at the floor with near-zero promotion upward — the canonical zero-wall pattern. This motivates VN-aware port detection and the moderate-indie tag work.
+  </figcaption>
+</figure>
+
+## Distribution shape of Cohort 2 — Q–V
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_10k_bands_overview.png' | relative_url }}" alt="Cohort 2 10K-band overview">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — 10K-band overview [Q]</span>
+    <strong>Coarse band view of C2.</strong> Wider bands than C1 because C2 lives at a higher tier; the same banding logic applies.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_10k_bands_shape.png' | relative_url }}" alt="Cohort 2 10K-band shape">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — band shape, 10K bands [R]</span>
+    <strong>Left-skew in every band.</strong> At AA+ scale, the top title of a studio's catalog stops being the long tail and sits at or above the band median. This is the core C2 shape finding.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_10k_bands_ecdf.png' | relative_url }}" alt="Cohort 2 10K-band ECDF">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — 10K-band ECDF [S]</span>
+    <strong>ECDF view of C2 bands.</strong> Used to validate that band-level kinks are real and reproducible, not histogram-binning artifacts.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_25k_bands_overview.png' | relative_url }}" alt="Cohort 2 25K-band overview">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — 25K-band overview [T]</span>
+    <strong>Wider bands at the top of C2.</strong> The 25K-band view is used for higher-tier slicing where 10K bands are too narrow to be informative.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_25k_bands_shape.png' | relative_url }}" alt="Cohort 2 25K-band shape">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — 25K-band shape [U]</span>
+    <strong>Top of C2 stays left-skewed.</strong> The left-skew finding holds even at the widest bands — it is not a binning artifact.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_25k_bands_ecdf.png' | relative_url }}" alt="Cohort 2 25K-band ECDF">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — 25K-band ECDF [V]</span>
+    <strong>ECDF confirmation at the top.</strong> The top end of C2 has its own internal band breaks, which is what makes the W–CC genre fingerprints possible.
+  </figcaption>
+</figure>
+
+## Genre & tag fingerprints inside Cohort 2 — W–CC
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_genre_x_band_heatmap.png' | relative_url }}" alt="Cohort 2 genre by band heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — genre × band heatmap [W–CC]</span>
+    <strong>Each band has a different genre signature.</strong> Action and MMO at the 1M+ tier; vehicle/party at 75K–100K; builder/educational at 100K–125K; rogue/shmup at 125K–150K; strategy/crafting at 150K–175K; open-world co-op at 500K+. This is the genre fingerprint table in chart form.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_tag_x_band_heatmap.png' | relative_url }}" alt="Cohort 2 tag by band heatmap">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — tag × band heatmap [W–CC, DD]</span>
+    <strong>Tag lift by C2 band.</strong> Adult content lifts only at the AA+ floor band (DD), not across the whole tier — this heatmap is where that narrower-than-expected pattern is visible.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_genre_sales_curves.png' | relative_url }}" alt="Cohort 2 genre sales curves">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — genre sales curves</span>
+    <strong>Owners curves by genre inside C2.</strong> Title-level validation of the band/genre fingerprints.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/cohort2_genre_sales_overlay.png' | relative_url }}" alt="Cohort 2 genre sales overlay">
+  <figcaption>
+    <span class="chart-title">Cohort 2 — genre sales overlay</span>
+    <strong>Genre curves overlaid for direct comparison.</strong> Highlights where genres separate at the top tier.
+  </figcaption>
+</figure>
+
+## Moderate-indie investigation — LL, MM
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_pool_size.png' | relative_url }}" alt="Moderate indie pool size after EA/F2P trap fix">
+  <figcaption>
+    <span class="chart-title">Pool size after the dual-location EA/F2P fix [LL]</span>
+    <strong>~17% shrinkage from a single corrected filter.</strong> Steam stores Early Access and Free-to-Play flags in two locations; a single-location filter silently keeps them in. Routing through the app's structural filter removes them and is what gets us from 1,610 to 1,331 first time.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_band_shift_profile.png' | relative_url }}" alt="Moderate indie band-shift profile">
+  <figcaption>
+    <span class="chart-title">Moderate-indie band-shift profile</span>
+    <strong>How counts redistribute across bands.</strong> When the corrected filter is applied, devs do not just disappear from the pool — they redistribute. This profile shows where they land.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_top_genres.png' | relative_url }}" alt="Moderate indie top genres">
+  <figcaption>
+    <span class="chart-title">Top genres in the moderate-indie pool</span>
+    <strong>Recomputed on the corrected pool.</strong> Genre ranking after LL is applied — different from the pre-LL version in shape, not just in count.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_genre_lift_heatmap.png' | relative_url }}" alt="Moderate indie genre lift heatmap">
+  <figcaption>
+    <span class="chart-title">Moderate-indie genre lift heatmap</span>
+    <strong>Genre lift by band, post-LL.</strong> Lift not share — which genres over-represent vs. base rate at each band level.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_tag_signatures.png' | relative_url }}" alt="Moderate indie tag signatures">
+  <figcaption>
+    <span class="chart-title">Moderate-indie tag signatures</span>
+    <strong>Tag-level fingerprints in the corrected pool.</strong> Used to identify which tags are characteristic of the moderate-indie interior rather than the floor or the near-AA+ top.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_tag_trends.png' | relative_url }}" alt="Moderate indie tag trends">
+  <figcaption>
+    <span class="chart-title">Per-tag trend across moderate-indie bands [MM]</span>
+    <strong>Trend lines, not point estimates.</strong> Some tags rise monotonically with band (real scale signal); others plateau or invert (saturation or zero-wall). The slope of each tag's line is the finding.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/moderate_indie_tag_shape_distribution.png' | relative_url }}" alt="Moderate indie tag shape distribution">
+  <figcaption>
+    <span class="chart-title">Tag shape distribution</span>
+    <strong>Shape classes for tags.</strong> Each tag's trend curve gets sorted into a shape class (monotonic, plateau, inverted, U-shaped). The histogram here shows how common each shape is in the moderate-indie pool.
+  </figcaption>
+</figure>
+
+## Portfolio Concentration Index (PCI) — NN–SS
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_distribution_both_cohorts.png' | relative_url }}" alt="PCI distribution both cohorts">
+  <figcaption>
+    <span class="chart-title">PCI distribution — both cohorts [NN, OO]</span>
+    <strong>C2 is genuinely more diversified than C1.</strong> The HHI-style concentration index is shifted right (concentrated) in C1 and left (diversified) in C2 — and the gap survives the catalog-size correction (QQ), so it is not a measurement artifact.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_vs_catalog_size.png' | relative_url }}" alt="PCI vs catalog size">
+  <figcaption>
+    <span class="chart-title">PCI vs. catalog size [QQ]</span>
+    <strong>PCI mechanically drops with catalog size.</strong> Large catalogs cannot easily have high PCI by construction — a Herfindahl-style index falls as the number of contributing items grows. Read PCI alongside <code>n_titles</code>.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_category_mix.png' | relative_url }}" alt="PCI category mix">
+  <figcaption>
+    <span class="chart-title">PCI category mix — diversified / moderate / concentrated / one-hit [RR]</span>
+    <strong>Moderate + concentrated is the investable zone.</strong> Diversified studios behave like portfolios (no studio-level thesis); one-hit studios are unrepeatable. The middle two categories are where a coherent studio-level investment can exist.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_by_band_cohort1.png' | relative_url }}" alt="PCI by band Cohort 1">
+  <figcaption>
+    <span class="chart-title">PCI by band — Cohort 1 [PP]</span>
+    <strong>C1's "concentrated" floor is partly a zero-bucket artifact.</strong> Concentration spikes at the floor because zero-bucket catalogs trivially read as concentrated. The mod+conc filter in the pipeline is what removes this artifact.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_category_studio_profile.png' | relative_url }}" alt="PCI category studio profile">
+  <figcaption>
+    <span class="chart-title">PCI category studio profiles [SS]</span>
+    <strong>What each PCI category looks like as a studio.</strong> Owners share, title count, age, and band mix differ systematically across diversified/moderate/concentrated/one-hit. This is the qualitative check that the four categories carve real studio archetypes.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_category_tag_signatures.png' | relative_url }}" alt="PCI category tag signatures">
+  <figcaption>
+    <span class="chart-title">PCI category tag signatures [SS]</span>
+    <strong>Each category has its own tag fingerprint.</strong> Concentrated studios over-index on different tags than diversified ones. Helps a diligence team frame the right comparable studios when sizing a deal.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_category_by_band_c1.png' | relative_url }}" alt="PCI category by band Cohort 1">
+  <figcaption>
+    <span class="chart-title">PCI category × band — Cohort 1 [SS]</span>
+    <strong>Category mix shifts by band.</strong> The moderate and concentrated categories are not evenly distributed across bands — and that distribution is what the suspect battery and trajectory layers act on next.
+  </figcaption>
+</figure>
+
+## Suspect battery & country annotation — TT
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_suspect_overlay.png' | relative_url }}" alt="PCI with suspect overlay">
+  <figcaption>
+    <span class="chart-title">PCI distribution with suspect overlay [TT]</span>
+    <strong>Suspect-flagged studios cluster, but don't define, the concentrated bucket.</strong> The 9-test suspect battery tags HIGH / MEDIUM / LOW / CLEAR studios; this overlay shows they are concentrated but not exclusively in any one PCI region. Annotation, not selection.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/pci_country_distribution.png' | relative_url }}" alt="PCI country distribution">
+  <figcaption>
+    <span class="chart-title">Country inference — distribution across the mod+conc pool [TT]</span>
+    <strong>Country is a diligence-sequencing aid, not a filter.</strong> ~78% of studios land in an Unknown bucket by design (conservative inference from publisher-name suffixes + Steam-language dominance). Known-country studios are sequenced into diligence first because regulatory, IP, tax, banking, and sanctions complexity vary by jurisdiction.
+  </figcaption>
+</figure>
+
+## Final 146 — trajectory & geography
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/trajectory_distribution.png' | relative_url }}" alt="Trajectory distribution">
+  <figcaption>
+    <span class="chart-title">Trajectory label distribution</span>
+    <strong>RISING (82) + ANCHOR_RECENT (64) = 146.</strong> Of the 1,210 mod+conc devs that pass the suspect battery, only those labeled RISING or ANCHOR_RECENT are kept as investor candidates. Falling, steady, mature, and aging trajectories are out of scope for active investment.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/trajectory_suspect_mix.png' | relative_url }}" alt="Trajectory suspect mix">
+  <figcaption>
+    <span class="chart-title">Trajectory × suspect-battery mix</span>
+    <strong>How the two annotation layers interact.</strong> The final 146 carry both a momentum label and a suspect-battery clearance. This chart shows the joint distribution — what proportion of each trajectory survives the suspect battery before the trajectory gate.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/investor_candidates_map.png' | relative_url }}" alt="Investor candidates map">
+  <figcaption>
+    <span class="chart-title">Final 146 investor candidates — by inferred jurisdiction</span>
+    <strong>The output of the pipeline as a map.</strong> Country tags are a diligence-sequencing aid (regulatory, IP, tax, banking) — not a selection filter. The roster itself is kept in a private companion repo with a new scrape pending.
+  </figcaption>
+</figure>
+
+## Methodology screenshots — pipeline run
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/methodology_view.png' | relative_url }}" alt="App methodology view screenshot">
+  <figcaption>
+    <span class="chart-title">App methodology view</span>
+    <strong>The Streamlit calibration app.</strong> Sliders for owners thresholds, band sizes, EA/F2P inclusion, and dormancy years — every setting in the app maps to a finding above. Used to validate that the pipeline's hard-coded thresholds are the right ones.
+  </figcaption>
+</figure>
+
+<figure class="chart">
+  <img src="{{ '/assets/charts/findings_top.png' | relative_url }}" alt="App findings panel top">
+  <figcaption>
+    <span class="chart-title">App findings panel — top</span>
+    <strong>Findings as displayed in the app.</strong> Each finding is locked in the Markdown source and rendered in the app's Findings tab for live cross-reference while calibrating.
+  </figcaption>
+</figure>
