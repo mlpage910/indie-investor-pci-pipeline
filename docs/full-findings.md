@@ -1,6 +1,6 @@
 ---
-layout: default
-title: Full findings reference
+title: "Full Findings (A–UU)"
+permalink: /full-findings/
 ---
 
 # Steam Investor-Candidate Pipeline — Locked Findings & Filter Catalog

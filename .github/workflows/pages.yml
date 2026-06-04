@@ -6,7 +6,6 @@ on:
     paths:
       - 'docs/**'
       - 'findings/**'
-      - 'README.md'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
 
@@ -27,17 +26,24 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
-          bundler-cache: true
-          working-directory: docs
+          bundler-cache: false
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
-      - name: Build with Jekyll
+      - name: Install Jekyll
         working-directory: docs
         run: |
-          bundle init
-          bundle add jekyll jekyll-theme-cayman jekyll-relative-links jekyll-seo-tag
-          bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+          cat > Gemfile <<'EOF'
+          source "https://rubygems.org"
+          gem "jekyll", "~> 4.3"
+          gem "jekyll-relative-links"
+          gem "jekyll-seo-tag"
+          gem "kramdown-parser-gfm"
+          EOF
+          bundle install
+      - name: Build with Jekyll
+        working-directory: docs
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs/_site

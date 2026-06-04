@@ -1,15 +1,50 @@
-title: indie-investor-pci-pipeline
-description: From 140,082 Steam titles by 53,876 developers to 457 titles by 146 developers — a reproducible 11-stage filter pipeline for indie-studio investment screening.
-theme: jekyll-theme-cayman
+title: "indie-investor-pci-pipeline"
+subtitle: "A reproducible filter chain for indie-studio investment screening on Steam"
+author: "Melanie Page"
+description: "From 140,082 Steam titles by 53,876 developers to 457 titles by 146 developers — a reproducible 11-stage filter pipeline."
+
+# Use our custom layout (NOT a remote theme)
+theme: null
 markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  toc_levels: 2..3
+
 plugins:
   - jekyll-relative-links
   - jekyll-seo-tag
+
 relative_links:
   enabled: true
   collections: true
-include:
-  - README.md
+
+# Tab navigation (order matters — first item is the landing page)
+nav:
+  - title: "Funnel & Methodology"
+    url: /
+    page: index
+  - title: "Findings — Highlights"
+    url: /findings/
+    page: findings
+  - title: "Full Findings (A–UU)"
+    url: /full-findings/
+    page: full-findings
+  - title: "Reproducibility"
+    url: /reproducibility/
+    page: reproducibility
+  - title: "Country Inference"
+    url: /country-inference/
+    page: country-inference
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle

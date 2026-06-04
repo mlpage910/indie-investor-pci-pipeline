@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {% seo %}
+</head>
+<body>
+
+<header class="site-header">
+  <div class="masthead">
+    <p class="eyebrow">Working paper · Steam catalog analysis · October 2024 vintage</p>
+    <h1 class="site-title">{{ site.title }}</h1>
+    <p class="site-subtitle">{{ site.subtitle }}</p>
+    <p class="byline">
+      {{ site.author }} ·
+      <a href="https://github.com/mlpage910/indie-investor-pci-pipeline">source repository</a> ·
+      data via <a href="https://github.com/NewbieIndieGameDev/steam-insights">NewbieIndieGameDev/steam-insights</a>
+    </p>
+  </div>
+</header>
+
+<nav class="site-nav" aria-label="Primary">
+  <div class="nav-inner">
+    {% for item in site.nav %}
+      {% assign current_page = page.name | split: "." | first %}
+      {% if current_page == item.page %}
+        <a class="active" href="{{ item.url | relative_url }}">{{ item.title }}</a>
+      {% else %}
+        <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</nav>
+
+<main class="content">
+  {{ content }}
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      © {{ "now" | date: "%Y" }} {{ site.author }} · Released under
+      <a href="https://github.com/mlpage910/indie-investor-pci-pipeline/blob/main/LICENSE">MIT</a>.
+    </div>
+    <div>
+      <a href="https://github.com/mlpage910/indie-investor-pci-pipeline">GitHub</a> ·
+      <a href="https://github.com/mlpage910/indie-investor-pci-pipeline/blob/main/findings/locked_findings.md">Findings (raw)</a> ·
+      Roster is a private companion repo (research in progress)
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

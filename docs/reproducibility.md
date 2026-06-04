@@ -1,11 +1,11 @@
 ---
-layout: default
-title: Reproducibility & the locked roster
+title: "Reproducibility"
+permalink: /reproducibility/
 ---
 
-# Reproducibility & the locked roster
+# Reproducibility & the Locked Roster
 
-The pipeline is a single runnable module (`pipeline/investor_pipeline.py`) that takes a raw Steam dataset directory and produces the locked 146-developer candidate roster. Running it on the original October 2024 scrape reproduces every locked checkpoint from Stage 6 onward exactly.
+<p class="lead">The pipeline is a single runnable module that reproduces the locked 146-developer candidate roster from a raw Steam dataset directory. Every locked checkpoint from Stage 6 onward matches exactly.</p>
 
 ## Reconciliation against the locked roster
 
@@ -30,9 +30,9 @@ All 146 developer identities match the locked roster one-for-one.
 
 ## The two +2 deltas
 
-Stage 3 picks up 2 extra Cohort 1 devs due to cleaner NaN handling on the dormancy join. Those 2 propagate to Stage 5. They are absorbed at Stage 6a (37 dropped vs locked 35). **Net effect: zero impact on Stage 6 (1,551), Stage 7 (1,210), or Stage 11 (146).**
+Stage 3 picks up two extra Cohort 1 developers due to cleaner NaN handling on the dormancy join. Those two propagate to Stage 5. They are absorbed at Stage 6a (37 dropped vs locked 35). Net effect: zero impact on Stage 6 (1,551), Stage 7 (1,210), or Stage 11 (146).
 
-## Canonical thresholds (`pipeline/investor_pipeline.py`)
+## Canonical thresholds
 
 ```python
 STRICT_AAA    = dict(min_games=3, min_avg_owners=1_000_000, min_max_owners=2_000_000)
@@ -42,7 +42,7 @@ DORMANT_YEARS = 5.0
 REF_DATE      = pd.Timestamp("2024-10-28")
 ```
 
-## Cohort logic (`pipeline/investor_pipeline.py`)
+## Cohort logic
 
 ```python
 c1_mask = agg['multi'] & ~agg['aa_plus']       # sub-AA+ multi-title
@@ -51,9 +51,9 @@ c2_mask = agg['aa_plus'] & ~agg['broad_aaa']   # AA+ excluding broad-AAA
 
 ## The single most important non-obvious detail
 
-Activity (dormancy) is measured on a **looser** cohort with EA + demos restored (`stage12_activity`). This lets a dev who is still shipping EA or demo content count as non-dormant even if their last paid release is older than 5 years.
+Activity (dormancy) is measured on a **looser** cohort with EA + demos restored (`stage12_activity`). This lets a developer who is still shipping EA or demo content count as non-dormant even if their last paid release is older than 5 years.
 
-Measuring dormancy on the strict cohort would silently drop a meaningful number of legitimate-but-EA-only devs.
+Measuring dormancy on the strict cohort would silently drop a meaningful number of legitimate-but-EA-only developers.
 
 ## Running it yourself
 
@@ -63,12 +63,12 @@ python pipeline/investor_pipeline.py \
     --out  pipeline_run
 ```
 
-Output:
+Output files:
 
 - `pipeline_run/investor_candidates.csv` — final 146 with scores
-- `pipeline_run/all_moderate_concentrated_scored.csv` — full 1,210 with all annotations
-- `pipeline_run/cohorts_full.csv` — all 6,835 cohorted devs
-- `pipeline_run/pci_resolvable.csv` — 1,612 PCI-resolvable devs
+- `pipeline_run/all_moderate_concentrated_scored.csv` — full 1,210 with annotations
+- `pipeline_run/cohorts_full.csv` — 6,835 cohorted developers
+- `pipeline_run/pci_resolvable.csv` — 1,612 PCI-resolvable developers
 - `pipeline_run/pipeline_summary.csv` — the reconciliation table
 
 The pipeline prints a stage-by-stage reconciliation table on every run.
