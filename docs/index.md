@@ -35,11 +35,13 @@ title: "Funnel"
 |---|---:|---:|
 | Raw scrape (October 2024) | **140,082** | **53,876** |
 | Hygiene + structural cleanup | 64,320 | 38,524 |
-| Cohort assignment (multi-title, non-AAA, active &lt;5y) | — | 6,835 |
-| PCI-resolvable (≥2 measurable titles) | — | 1,612 |
-| Quality cleanup (port-shops, shovelware, audit R2) | — | 1,551 |
-| Moderate + concentrated PCI | — | 1,210 |
+| Cohort assignment (multi-title, non-AAA, active &lt;5y) | 27,866 | 6,835 |
+| PCI-resolvable (≥2 measurable titles) | 10,538 | 1,612 |
+| Quality cleanup (port-shops, shovelware, audit R2) | 8,767 | 1,551 |
+| Moderate + concentrated PCI | 4,925 | 1,210 |
 | **Final investor candidates** | **457** | **146** |
+
+<p style="font-size:0.85rem;color:var(--ink-faint);font-family:var(--sans);margin-top:-0.4rem">Titles for dev-level stages are the count of structural-pool titles whose developer is in that stage's dev set. Computed from <code>investor_pipeline.py</code> intermediate outputs against the 64,320-title structural pool.</p>
 
 ## Filter catalog — what each stage defines
 
