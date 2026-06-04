@@ -13,7 +13,7 @@ title: "Funnel"
     <span class="num">457</span> titles by <span class="num">146</span> developers.
   </p>
   <p class="funnel-caption">
-    A 99.7% title-level and 99.7% developer-level reduction through 11 calibrated stages, every threshold tied to a validated finding (A&ndash;UU).
+    A 99.7% title-level and 99.7% developer-level reduction through 11 calibrated stages, every threshold tied to a validated finding (A&ndash;VV). A separate <strong>83-studio C2-diversified research pool</strong> is tracked alongside the main roster for multi-IP and catalog-roll-up theses.
   </p>
 </div>
 
@@ -100,7 +100,7 @@ The pipeline answers four questions in sequence, each gating the next:
 3. **Is their catalog focused enough to read as a coherent studio rather than a portfolio shop?** (Stages 4–7)
 4. **Are they moving in the right direction right now?** (Stages 8–11)
 
-The pipeline is a **funnel of conjunctions, not a union**. A candidate must satisfy every gate: real product → investable scale → not dormant → focused catalog → not flagged → moving up. Each gate is calibrated against the locked findings (A–UU); the 146 figure is the natural population that survives all of them, not a target that was tuned for.
+The pipeline is a **funnel of conjunctions, not a union**. A candidate must satisfy every gate: real product → investable scale → not dormant → focused catalog → not flagged → moving up. Each gate is calibrated against the locked findings (A–VV); the 146 figure is the natural population that survives all of them, not a target that was tuned for.
 
 ## Running the pipeline
 

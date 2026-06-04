@@ -37,7 +37,7 @@ Each question gates the next. A studio passing Question 2 but failing Question 3
 
 ### 1.3 Why a deterministic filter chain rather than a model
 
-We are not building a yield-curve forecaster or a "predict the next hit" classifier. We are building a **screening rule** that an analyst could in principle defend in writing. Every threshold maps to a finding (A–UU) and every exclusion list is documented. The output of a model run with hyperparameters is not the right artifact for an investment-screening process; the output of a documented filter chain is.
+We are not building a yield-curve forecaster or a "predict the next hit" classifier. We are building a **screening rule** that an analyst could in principle defend in writing. Every threshold maps to a finding (A–VV) and every exclusion list is documented. The output of a model run with hyperparameters is not the right artifact for an investment-screening process; the output of a documented filter chain is.
 
 The trade-off is that the pipeline is **not adaptive**. It cannot learn from new data without thresholds being re-calibrated against the findings. That is intentional — the calibration step is a deliberate, auditable analyst action, not an opaque retraining loop.
 
@@ -167,6 +167,25 @@ A dev becomes a final investor candidate if and only if **all four** are true:
 
 **Output: 146 developers (53 C1 + 93 C2), spanning 457 titles.** Of the 146, 82 are `RISING` and 64 are `ANCHOR_RECENT`. The country tag does not gate; it sequences.
 
+### 2.11 Separately-tracked research pool — Cohort 2 diversified + CLEAR
+
+Not every studio dropped at Stage 7 is uninteresting. The pipeline classifies **diversified** (PCI < 0.35) catalogs as portfolio-shaped, which is the right framing in Cohort 1 (where diversified usually means "zero-bucket floor + one outlier"), but it is **not** the right framing in Cohort 2.
+
+A Cohort 2 diversified studio is, by definition, an AA+ developer (≥2 titles averaging ≥50K owners) whose owners are spread across many titles rather than concentrated in one. At AA+ scale this is consistent with a **multi-hit shipping studio with a sustained catalog and fanbase** — the opposite of a portfolio shop.
+
+The pipeline therefore tracks this group as a **separate research pool**, distinct from the main 146-candidate roster:
+
+- **108 C2 diversified studios** survive Stage 6 cleanup.
+- **83 of those score CLEAR** on the same 9-test suspect battery used for the main roster.
+- Median 5 resolvable titles, median 600K cumulative owners.
+- Recognizable names include 4A Games, Tango Gameworks, SUPERHOT Team, Wolfire Games, Spiderweb Software, Revolution Software, Artifex Mundi, ACE Team, Positech Games.
+
+**Why this is a research pool, not a candidate roster.** The trajectory layer (Stage 9) is anchor-based and assumes a single dominant title; it does not produce meaningful labels for diversified portfolios. The main funnel's Stage 11 gate (RISING or ANCHOR_RECENT) cannot be applied. Future research should design a portfolio-appropriate momentum metric — for example, the sum of late-half owners across the whole catalog vs. the early-half — before any of these 83 can move to a candidate roster.
+
+**Why investors should know it exists.** This pool is the right starting point for **multi-IP acquirer theses**, **catalog-roll-up plays**, and **studios with sustained back-catalog cash flow**. They are not lower-quality than the 146; they are a *different shape* of investment opportunity. The 146 roster answers "which studios have a coherent single-thesis story?" — the C2-diversified-CLEAR pool answers "which AA+ studios are sustainably shipping across a multi-IP catalog?"
+
+The pool is held in the private companion repo at `research_pool/cohort2_diversified_clear.csv` (and the full 108 with bucket scores at `research_pool/cohort2_diversified_research_pool.csv`).
+
 ## 3. Audit subsystems
 
 ### 3.1 Port-shop detection (HH–KK)
@@ -208,7 +227,7 @@ These limitations are real and important. The pipeline is a screening tool, not 
 
 - **The full filter chain** — [Funnel]({{ '/' | relative_url }})
 - **Top-level findings** — [Findings — Highlights]({{ '/findings/' | relative_url }})
-- **Every locked finding with chart appendix** — [Full Findings (A–UU)]({{ '/full-findings/' | relative_url }})
+- **Every locked finding with chart appendix** — [Full Findings (A–VV)]({{ '/full-findings/' | relative_url }})
 - **Pipeline reproducibility against locked roster** — [Reproducibility]({{ '/reproducibility/' | relative_url }})
 - **Country triage framing in detail** — [Country Inference]({{ '/country-inference/' | relative_url }})
 - **Upstream Steam data** — [NewbieIndieGameDev/steam-insights](https://github.com/NewbieIndieGameDev/steam-insights)

@@ -1,5 +1,5 @@
 ---
-title: "Full Findings (A–UU)"
+title: "Full Findings (A–VV)"
 permalink: /full-findings/
 ---
 
@@ -508,6 +508,63 @@ c2_mask = agg['aa_plus'] & ~agg['broad_aaa']   # AA+ excluding broad-AAA
 **PCI restricted to cohort devs.** Stage 4 only computes PCI for the ~6,835 cohorted devs (not all 60K+ devs in the structural pool). This is a correctness fix, not just an optimization — including non-cohort devs in the PCI population would dilute the categorical mix.
 
 **Plain-language takeaway.** The pipeline is now a single runnable module that any new Steam dataset can flow through and reach the same canonical roster. The audit findings A–TT calibrate every threshold and exclusion list it uses; the reconciliation table above is the proof that the code faithfully implements them. The 146-candidate output is no longer a one-off artifact of a notebook session — it is the deterministic output of a documented filter chain.
+
+---
+
+## Finding VV — Cohort 2 diversified + CLEAR is a separately-tracked research category
+
+### What's new
+
+The main 146-candidate roster excludes diversified PCI studios (PCI < 0.35) at Stage 7 by design: diversified catalogs behave like portfolios, not single-thesis bets. In Cohort 1 this exclusion is unambiguously correct — most C1 "diversified" cases are zero-bucket-floor artifacts (Finding PP). **In Cohort 2 it is not.** A C2 diversified studio is, by definition, an AA+ developer (≥2 titles averaging ≥50K owners) whose owners are spread across many titles. At AA+ scale that pattern is consistent with a **multi-hit shipping studio with a sustained catalog and fanbase**, which is the exact opposite of what "portfolio" implies.
+
+This finding formalizes the C2-diversified-CLEAR group as a separately-tracked research pool, distinct from the main 146 roster.
+
+### Population
+
+Applying the suspect battery (Stage 8) to the C2 diversified pool after Stage 6 cleanup:
+
+| Bucket | Count |
+|---|---:|
+| CLEAR | **83** |
+| LOW_SUSPECT | 22 |
+| MEDIUM_SUSPECT | 2 |
+| HIGH_SUSPECT | 1 |
+| **Total C2 diversified (post-Stage 6)** | **108** |
+
+**The research pool is the 83 CLEAR studios.** The 22 LOW are worth a manual look. The 3 MEDIUM/HIGH should be vetted before any research effort is invested.
+
+### Profile (83-dev CLEAR pool)
+
+- Median resolvable titles: **5** (range 3–35)
+- Median cumulative owners: **600K** (range 150K–6M)
+- Top by cumulative owners (selected): 4A Games (6.0M, 3 titles), Tango Gameworks (3.5M, 4 titles), SUPERHOT Team (3.0M, 3 titles), Total Mayhem Games (2.2M, 4 titles), Wolfire Games (1.6M, 4 titles), Streum On Studio (1.5M, 3 titles), Forever Entertainment S.A. (1.2M, 10 titles), Spiderweb Software (1.17M, 17 titles), ACE Team (970K, 7 titles), Revolution Software (950K, 6 titles), Positech Games (940K, 8 titles), Artifex Mundi (1.36M, 16 titles).
+
+These are recognizable shipping studios with multi-title catalogs, not shovelware operators.
+
+### Why this is a research pool, not a candidate roster
+
+The main funnel's Stage 9 trajectory layer is anchor-based: it assumes one dominant title and classifies the studio by anchor share, anchor age, and the late-vs-early-half owners split. **Diversified studios don't have a dominant anchor by definition**, so the trajectory labels (RISING, ANCHOR_RECENT, etc.) do not apply, and Stage 11's gate (RISING or ANCHOR_RECENT) cannot be evaluated.
+
+Moving any of these 83 into a candidate roster therefore requires:
+
+1. **A portfolio-appropriate momentum metric.** Candidate: sum of late-half owners across the whole catalog vs. sum of early-half owners, weighted by per-title age. A studio whose late-half catalog dominates its early-half catalog is rising in a portfolio-shape way.
+2. **A different concentration-trend signal.** A diversified studio's interesting movement is not in PCI itself (which is intentionally low and stable) but in catalog *expansion* — new titles per year, new genres entered, new IP cadence.
+3. **A manual diligence sweep.** The Stage 6 exclusion lists are dev-level and have been applied, so port shops and shovelware are already out. But the qualitative IP-quality check is best done by hand for this pool.
+
+### Why investors should know this pool exists
+
+The main 146-candidate roster answers one question: *which studios have a coherent single-thesis story right now?* The C2-diversified-CLEAR research pool answers a different question: *which AA+ studios are sustainably shipping across a multi-IP catalog?* Both questions are investable. They just require different deal structures:
+
+- **Main 146 roster** — single-thesis investments (the anchor IP is the story; the catalog supports it).
+- **C2-diversified-CLEAR pool** — multi-IP and catalog-roll-up plays (the catalog is the story; no single IP carries the bag).
+
+The C2-diversified-CLEAR pool is also the natural sourcing universe for buy-side mandates focused on **back-catalog cash flow** rather than near-term growth.
+
+### Operational notes
+
+- Roster lives at `research_pool/cohort2_diversified_clear.csv` in the private companion repo (83 CLEAR devs).
+- Full 108-dev C2-diversified pool with suspect-battery scores lives at `research_pool/cohort2_diversified_research_pool.csv`.
+- Country inference, trajectory labels, and per-studio profiles are **not** computed for this pool. Future work.
 
 ---
 
