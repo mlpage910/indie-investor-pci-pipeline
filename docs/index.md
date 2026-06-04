@@ -1,10 +1,10 @@
 ---
-title: "Funnel & Methodology"
+title: "Funnel"
 ---
 
-# Funnel & Methodology
+# The Funnel
 
-<p class="lead">A reproducible 11-stage filter chain that turns a raw Steam catalog into a ranked, audited shortlist of indie studios at investable scale.</p>
+<p class="lead">A reproducible 11-stage filter chain that turns a raw Steam catalog into a ranked, audited shortlist of indie studios at investable scale. This page shows <em>what</em> the funnel produces and at <em>what counts</em>; the <a href="{{ '/methodology/' | relative_url }}">Methodology</a> tab covers <em>how and why</em> each stage is constructed.</p>
 
 <div class="funnel-hero">
   <p class="funnel-numbers">

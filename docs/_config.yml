@@ -21,9 +21,12 @@ relative_links:
 
 # Tab navigation (order matters — first item is the landing page)
 nav:
-  - title: "Funnel & Methodology"
+  - title: "Funnel"
     url: /
     page: index
+  - title: "Methodology"
+    url: /methodology/
+    page: methodology
   - title: "Findings — Highlights"
     url: /findings/
     page: findings
