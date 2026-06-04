@@ -194,7 +194,7 @@ permalink: /findings/
 
 <div class="finding-card" style="border-left:3px solid var(--accent);background:#fbf6ed">
   <span class="finding-key">[VV]</span>
-  <strong>Cohort 2 diversified + CLEAR is a separate research category</strong> — not lower-quality than the 146 roster, just a different shape. <strong>83 AA+ studios</strong> (4A Games, Tango Gameworks, SUPERHOT Team, Wolfire, Spiderweb Software, Revolution Software, Artifex Mundi, etc.) that the main pipeline drops at Stage 7 only because owners spread across many titles. The right starting point for <em>multi-IP acquirer theses</em>, <em>catalog roll-ups</em>, and <em>back-catalog cash-flow plays</em>. Future research needs a portfolio-appropriate momentum metric before any of the 83 can move to a candidate roster.
+  <strong>Cohort 2 diversified + CLEAR is a separate research category</strong> — not lower-quality than the 146 roster, just a different shape. <strong>83 AA+ studios</strong> (4A Games, Tango Gameworks, SUPERHOT Team, Wolfire, Spiderweb Software, Revolution Software, Artifex Mundi, etc.) that the main pipeline drops at Stage 7 only because owners spread across many titles. The right starting point for <em>multi-IP acquirer theses</em>, <em>catalog roll-ups</em>, and <em>back-catalog cash-flow plays</em>. Running the pipeline's Stages 9–11 on the pool surfaces <strong>9 RISING+CLEAR research candidates</strong> (Total Mayhem Games, Somi, SOFTSTAR, Auroch Digital, Mimimi, Siactro, IllFonic, Terri Vellmann/Doseone, Camel 101) under anchor-biased trajectory math — read as an over-qualified subset, not a final roster. A portfolio-appropriate momentum metric is still needed before any of the 83 can move to a true candidate roster.
 </div>
 
 <figure class="chart">

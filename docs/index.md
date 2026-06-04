@@ -13,7 +13,7 @@ title: "Funnel"
     <span class="num">457</span> titles by <span class="num">146</span> developers.
   </p>
   <p class="funnel-caption">
-    A 99.7% title-level and 99.7% developer-level reduction through 11 calibrated stages, every threshold tied to a validated finding (A&ndash;VV). A separate <strong>83-studio C2-diversified research pool</strong> is tracked alongside the main roster for multi-IP and catalog-roll-up theses.
+    A 99.7% title-level and 99.7% developer-level reduction through 11 calibrated stages, every threshold tied to a validated finding (A&ndash;VV). A separate <strong>83-studio C2-diversified research pool</strong> is tracked alongside the main roster for multi-IP and catalog-roll-up theses; running the pipeline's remaining stages on it surfaces <strong>9 RISING+CLEAR research candidates</strong> as an over-qualified subset under anchor-biased trajectory math (see <a href="{{ '/full-findings/#finding-vv--cohort-2-diversified--clear-is-a-separately-tracked-research-category' | relative_url }}">Finding VV</a>).
   </p>
 </div>
 

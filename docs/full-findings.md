@@ -560,11 +560,50 @@ The main 146-candidate roster answers one question: *which studios have a cohere
 
 The C2-diversified-CLEAR pool is also the natural sourcing universe for buy-side mandates focused on **back-catalog cash flow** rather than near-term growth.
 
+### Results from running Stages 9–11 on the pool
+
+For transparency the main funnel's Stages 8–11 were re-run on the 108-dev C2-diversified pool using the same `investor_pipeline.py` code as the 146-roster build. Trajectory distribution:
+
+| Trajectory label | Count | Note |
+|---|---:|---|
+| `FALLING` | 67 | Late-half owners < early-half across the catalog. **Inflated** by anchor-weighted math — a diversified studio with a single older breakout will look "falling" even if its broader catalog is steady. |
+| `STEADY` | 30 | Balanced late/early ratio. |
+| `RISING` | 11 | Late-half owners materially exceed early-half. |
+| `ANCHOR_RECENT` | 0 | **Impossible by construction** — the label requires ≥70% anchor share, and diversified is defined as PCI < 0.35. |
+| `ANCHOR_MATURE` | 0 | Same. |
+| `ANCHOR_AGING` | 0 | Same. |
+
+Applying Stage 11's gate (`RISING` or `ANCHOR_RECENT`, plus `CLEAR` on the suspect battery) gives **9 research candidates**, all `RISING`+`CLEAR`:
+
+| Developer | Cumulative owners | Resolvable titles | Anchor title | Anchor age | Inferred country | Composite score |
+|---|---:|---:|---|---:|---|---:|
+| Total Mayhem Games | 2.20M | 4 | We Were Here Expeditions | 1.1y | Unknown | 8.25 |
+| Somi | 450K | 5 | No Case Should Remain Unsolved | 0.8y | Japan | 8.04 |
+| SOFTSTAR ENTERTAINMENT | 500K | 4 | Bridge Curse: Road to Salvation | 2.2y | China | 7.10 |
+| Auroch Digital | 510K | 6 | Mars Horizon | 4.0y | Unknown | 6.99 |
+| Mimimi Games | 700K | 4 | Desperados III | 4.4y | Unknown | 6.92 |
+| Siactro | 420K | 4 | Toree 3D | 3.6y | Unknown (EN-default) | 6.60 |
+| IllFonic | 420K | 4 | Predator: Hunting Grounds | 3.5y | Unknown | 6.20 |
+| Terri Vellmann / Doseone | 400K | 4 | SLUDGE LIFE | 3.4y | Unknown | 5.85 |
+| Camel 101 | 270K | 5 | Those Who Remain | 4.4y | Unknown | 5.43 |
+
+### Methodological caveat (read before using the 9-candidate list)
+
+The Stage 9 trajectory layer is **structurally biased against diversified studios**:
+
+- The `ANCHOR_*` labels require ≥70% anchor share. Diversified by definition has PCI < 0.35 and (in practice) anchor share well below 70%. Zero `ANCHOR_*` is a math identity here, not a finding about studios.
+- The `FALLING`/`STEADY`/`RISING` split is computed on the anchor-weighted late/early ratio, which over-weights the dominant title. For a multi-IP catalog this routinely flags studios as `FALLING` when only their single biggest game is older — even when the rest of the catalog is healthy.
+- Consequence: the 67 `FALLING` count is inflated, and the 9 `RISING`+`CLEAR` candidates are an **over-qualified subset**, not a complete answer. Real diversified momentum signals — catalog-weighted late/early ratio, titles-per-year delta, new-genre cadence — would surface a different (likely larger) candidate set.
+
+The 9-candidate list is therefore *a starting point for diligence on the most clearly accelerating studios in the pool*, not a final roster. The full 108-dev pool with all four scored layers (PCI, suspect, trajectory, country) remains the better starting point for catalog-roll-up sourcing.
+
 ### Operational notes
 
-- Roster lives at `research_pool/cohort2_diversified_clear.csv` in the private companion repo (83 CLEAR devs).
-- Full 108-dev C2-diversified pool with suspect-battery scores lives at `research_pool/cohort2_diversified_research_pool.csv`.
-- Country inference, trajectory labels, and per-studio profiles are **not** computed for this pool. Future work.
+- Research pool roster: `research_pool/cohort2_diversified_clear.csv` in the private companion repo (83 CLEAR devs).
+- Full 108-dev C2-diversified pool with suspect-battery scores: `research_pool/cohort2_diversified_research_pool.csv`.
+- Full 108-dev pool with PCI + suspect + trajectory + country layers: `research_pool/research_pool_full_scored.csv`.
+- 9-candidate over-qualified subset: `research_pool/research_pool_candidates.csv`.
+- See `research_pool/CANDIDATES.md` for the full run narrative.
 
 ---
 
